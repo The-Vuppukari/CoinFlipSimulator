@@ -3,28 +3,28 @@
 numberOfHeads=0
 numberOfTails=0
 function coinFlip(){
-coinFlip=$((RANDOM%2))
-if [ $coinFlip -eq 0 ]
-then
-	((numberOfHeads++))
-else
-	((numberOfTails++))
-fi
+	coinFlip=$((RANDOM%2))
+	if [ $coinFlip -eq 0 ]
+	then
+		((numberOfHeads++))
+	else
+		((numberOfTails++))
+	fi
 }
 function tie(){
-for (( j=0 ; ; j++ ))
-do
-	coinFlip
-	if [ $(($numberOfHeads-$numberOfTails)) -ge 2 ]
-	then
-		echo "Heads win"
-		break
-	elif [ $(($numberOfTails-$numberOfHeads)) -ge 2 ]
-	then
-		echo "Tails win"
-		break
-	fi
-done
+	for (( j=0 ; ; j++ ))
+	do
+		coinFlip
+		if [ $(($numberOfHeads-$numberOfTails)) -ge 2 ]
+		then
+			echo "Heads win"
+			break
+		elif [ $(($numberOfTails-$numberOfHeads)) -ge 2 ]
+		then
+			echo "Tails win"
+			break
+		fi
+	done
 }
 for (( i=0 ; ; i++ ))
 do
