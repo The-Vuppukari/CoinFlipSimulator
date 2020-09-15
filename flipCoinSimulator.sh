@@ -1,31 +1,56 @@
 #!/bin/bash -x
 
-isHeads=0
-isTails=1
-finalCount=21
-
-heads=0
-tails=0
-
-while [[ $heads -lt $finalCount ]] && [[ $tails -lt $finalCount ]]
+numberOfHeads=0
+numberOfTails=0
+function coinFlip(){
+coinFlip=$((RANDOM%2))
+if [ $coinFlip -eq 0 ]
+then
+	((numberOfHeads++))
+else
+	((numberOfTails++))
+fi
+}
+function tie(){
+for (( j=0 ; ; j++ ))
 do
-	coinFlip=$((RANDOM%2))
-	if [[ $isHeads -eq $coinFlip ]]
+	coinFlip
+	if [ $(($numberOfHeads-$numberOfTails)) -ge 2 ]
 	then
-		((heads++))	
-	elif [[ $isTails -eq $coinFlip ]]
+		echo "Heads win"
+		break
+	elif [ $(($numberOfTails-$numberOfHeads)) -ge 2 ]
 	then
-		((tails++))
+		echo "Tails win"
+		break
 	fi
 done
-
-if [[ $heads -eq $finalCount ]] && [[ $tails -eq $finalCount ]]
+}
+for (( i=0 ; ; i++ ))
+do
+	coinFlip
+	if [ $numberOfHeads -eq 21 ]
+	then
+		outcome=0
+		break
+	elif [ $numberOfTails -eq 21 ]
+	then
+		outcome=1
+		break
+	elif [ $numberOfHeads -eq 20 ] && [ $numberOfTails -eq 20 ]
+	then
+		outcome=2
+		break
+	fi
+done
+if [ $outcome -eq 2 ]
 then
-	echo "Its a tie"
-elif [[ $heads -eq $finalCount ]]
+	outcomeAfterTie="$(tie)"
+	echo $outcomeAfterTie
+elif [ $outcome -eq 1 ]
 then
-	echo "Heads won the by $(( $heads-$tails ))"
-elif [[ $tails -eq $finalCount ]]
+	echo "Tails win by $(($numberOfTails-$numberOfHeads))"
+elif [ $outcome -eq 0 ]
 then
-	echo "Tails won by $(( $tails-$heads ))"
+	echo "Heads win by $(($numberOfHeads-$numberOfTails))"
 fi
